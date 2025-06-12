@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="false"/>
+		<item key="selection" value="Hikari"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="Mike"/>
+			<item value="Regions"/>
+			<item value="New record, over 90 views."/>
+			<item value="sitemesh"/>
+			<item value="hikari"/>
+			<item value="aspect"/>
+			<item value="views"/>
+			<item value="bar-bloock"/>
+			<item value="head"/>
+			<item value="delete"/>
+			<item value="list"/>
+			<item value="error"/>
+		</list>
+		<list key="replacehistory">
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="807"/>
+		<item key="DIALOG_Y_ORIGIN" value="264"/>
+		<item key="DIALOG_WIDTH" value="322"/>
+		<item key="DIALOG_HEIGHT" value="391"/>
+		<item key="DIALOG_FONT_NAME" value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕"/>
+	</section>
+</section>

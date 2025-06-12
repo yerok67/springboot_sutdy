@@ -1,0 +1,72 @@
+package kr.gdu.dao;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import dao.mapper.UserMapper;
+import logic.User;
+
+@Repository
+public class UserDao {
+	@Autowired
+	private SqlSessionTemplate template;
+	private Map<String,Object> param = new HashMap<>();
+	private Class<kr.gdu.dao.mapper.UserMapper> cls = kr.gdu.dao.mapper.UserMapper.class;
+	
+	public void insert(User user) {
+		template.getMapper(cls).insert(user);
+	}
+
+	public User selectOne(String userid) {
+		param.clear();
+		param.put("userid", userid);
+		return template.selectOne("dao.mapper.UserMapper.select",param);
+	}
+
+	public void update(User user) {
+		template.getMapper(cls).update(user);
+	}
+
+	public void delete(String userid) {
+		template.getMapper(cls).delete(userid);
+	}
+
+	public void chgPass(String userid, String chgpass) {
+		template.getMapper(cls).chgPass(userid, chgpass);		
+	}
+
+	public String search(User user) {
+		String col = "userid";
+		if(user.getUserid() != null) {
+			col ="password";
+		}
+		param.clear();
+		param.put("col", col);
+		param.put("userid", user.getUserid());
+		param.put("email", user.getEmail());
+		param.put("phoneno", user.getPhoneno());
+		return template.getMapper(cls).search(param);
+	}
+
+	public void pwReset(User user) {
+		String ranPw = "";
+		for(int i = 0; i < 6; i++) {
+			while(true) {
+				int num = (int)(Math.random()*74 + 48);
+				if((num >= 48 && num <= 57) || (num >= 65 && num <= 90) || (num >= 97 && num <= 122)) {
+					ranPw += (char)num;
+					break;
+				}
+			}
+		}
+		template.getMapper(cls).resetPw(user, ranPw);
+	}
+	public List<User> list() {
+		return template.getMapper(cls).select(null);
+	}
+}
