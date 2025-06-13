@@ -4,10 +4,11 @@ package kr.gdu.logic;
 
 import java.util.Date;
 
-import javax.validation.constraints.NotEmpty;
+
 
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 
@@ -22,7 +23,7 @@ public class Board {
 	@NotEmpty(message="제목을 입력하세요")
 	private String title;
 	@NotEmpty(message="내용을 입력하세요")
-	private String contenet;
+	private String content;
 	private MultipartFile file1;
 	private String fileurl;
 	private Date regdate;

@@ -1,0 +1,52 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%-- /WEB-INF/views/board/detail.jsp --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시물 상세보기</title>
+<style type="text/css">
+.leftcol {
+	text-align: left;
+	vertical-align: top;
+}
+
+.leftcoltable {
+	height: 250px;
+	border-width: 0px;
+	vertical-align: top;
+	padding: 0px;
+}
+</style>
+</head>
+<body>
+	<table class="w3-table">
+		<tr>
+			<td colspan="2">${boardName}</td>
+		</tr>
+		<tr>
+			<td width="15%">글쓴이</td>
+			<td width="85%" class="leftcol">${board.writer}</td>
+		</tr>
+		<tr>
+			<td>제목</td>
+			<td class="leftcol">${board.title}</td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td class="leftcol leftcoltable">${board.content}</td>
+		</tr>
+		<tr>
+			<td>첨부파일</td>
+			<td>&nbsp;
+				<c:if test="${!empty board.fileurl}">
+					<a href="file/${board.fileurl}">${board.fileurl}</a>
+				</c:if>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

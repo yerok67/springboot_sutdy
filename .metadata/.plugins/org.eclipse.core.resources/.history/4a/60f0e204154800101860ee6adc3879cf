@@ -1,0 +1,7 @@
+package kr.gdu.intercepter;
+
+import org.springframework.web.servlet.HandlerInterceptor;
+
+public class BoardInterceptor implements HandlerInterceptor {
+
+}

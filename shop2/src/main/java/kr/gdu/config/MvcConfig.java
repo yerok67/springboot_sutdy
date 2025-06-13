@@ -10,10 +10,13 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
 import com.zaxxer.hikari.HikariDataSource;
+
+import kr.gdu.intercepter.BoardInterceptor;
 
 
 @Configuration 
@@ -50,4 +53,11 @@ public class MvcConfig implements WebMvcConfigurer{
 		return properties.initializeDataSourceBuilder().type(HikariDataSource.class).build(); //Connection POOL 객체
 	}
 	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	    registry.addInterceptor(new BoardInterceptor())
+	        .addPathPatterns("/board/write")		// 요청 url 정보
+	        .addPathPatterns("/board/update")
+	        .addPathPatterns("/board/delete");
+	}
 }
