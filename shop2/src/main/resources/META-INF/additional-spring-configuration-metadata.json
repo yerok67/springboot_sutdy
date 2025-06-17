@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "summernote.imgupload",
+  "type": "java.lang.String",
+  "description": "A description for 'summernote.imgupload'"
+}]}

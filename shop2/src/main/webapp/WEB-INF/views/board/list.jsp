@@ -62,8 +62,7 @@
 						href="detail?num=${board.num}">${board.title}</a></td>
 					<td>${board.writer}</td>
 					<td><fmt:formatDate value="${board.regdate }"
-							pattern="yyyyMMdd" var="rdate" /> <c:if
-							test="${today == rdate }">
+							pattern="yyyyMMdd" var="rdate" /> <c:if test="${today == rdate }">
 							<fmt:formatDate value="${board.regdate }" pattern="HH:mm:ss" />
 						</c:if> <c:if test="${today != rdate }">
 							<fmt:formatDate value="${board.regdate }"
@@ -93,7 +92,8 @@
 			</tr>
 		</c:if>
 		<tr>
-			<td colspan="5"><a href="write?boardid=${boardid}" class="w3-right">[글쓰기]</a></td>
+			<td colspan="5"><a href="write?boardid=${boardid}"
+				class="w3-right">[글쓰기]</a></td>
 		</tr>
 	</table>
 </body>

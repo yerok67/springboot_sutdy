@@ -19,12 +19,23 @@
 	href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-	
 </script>
-<script type="text/javascript"
-	src="http://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+<%-- summernote 관련 설정
+    jquery, bootstrap 기능 사용 --%>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 <style>
 html, body, h1, h2, h3, h4, h5 {
 	font-family: "Raleway", sans-serif
@@ -102,8 +113,11 @@ html, body, h1, h2, h3, h4, h5 {
 				<i class="fa fa-question-circle fa-fw"></i>&nbsp; QnA
 			</a>
 		</div>
-		<br>
-		<br>
+		<br> <br>
+
+		<div style="width: 100%;">
+			<div id="exchange" style="width: 70%; margin: 6px;"></div>
+		</div>
 	</nav>
 
 	<!-- Overlay effect when opening sidebar on small screens -->
@@ -127,13 +141,19 @@ html, body, h1, h2, h3, h4, h5 {
 						checked="checked">자유게시판 &nbsp;&nbsp; <input type="radio"
 						name="pie" onchange="piegraph(3)">QNA &nbsp;&nbsp;
 					<div id="piecontainer"
-						style="width: 100%; border: 1px solid #ffffff">
-						<canvas id="canvas1" style="width: 100%"></canvas>
-					</div>
+						style="width: 100%; border: 1px solid #ffffff"></div>
+				</div>
+			</div>
+			<div class="w3-half">
+				<div class="w3-container w3-padding-16 w3-center">
+					<input type="radio" name="barline" onchange="piegraph(2)"
+						checked="checked">자유게시판 &nbsp;&nbsp; <input type="radio"
+						name="barline" onchange="piegraph(3)">QNA &nbsp;&nbsp;
+					<div id="barcontainer"
+						style="width: 100%; border: 1px solid #ffffff"></div>
 				</div>
 			</div>
 		</div>
-
 		<div class="w3-panel">
 			<sitemesh:write property="body" />
 		</div>
@@ -188,5 +208,166 @@ html, body, h1, h2, h3, h4, h5 {
 	</script>
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+			getSido1();
+			// exchangeRate();	// HTML 형식(문자열)
+			exchangeRate2() // Map 형식(JSON)
+			piegraph(2) //
+		});
+
+		function getSido1() {
+			$.ajax({
+				url : "/ajax/select1",
+				success : function(data) {
+					console.log(data);
+					let arr = data.substring(data.indexOf('[') + 1,
+							data.indexOf(']')).split(",");
+					$.each(arr, function(i, item) {
+						$("select[name=si]").append(function() {
+							return "<option>" + item.trim() + "</option>";
+						});
+					});
+				}
+			});
+		}
+		function getText(name) {
+			let city = $("select[name='si']").val();
+			let gu = $("select[name='gu']").val();
+			let disname;
+			let toptext = "구군을 선택하세요.";
+			let params = "";
+			if (name == "si") {
+				params = "si=" + city.trim();
+				disname = "gu";
+			} else if (name == "gu") {
+				params = "si=" + city.trim() + "&gu=" + gu.trim();
+				disname = "dong";
+				toptext = "동리를 선택하세요";
+			} else {
+				return;
+			}
+			$.ajax({
+				url : "/ajax/select2",
+				type : "POST",
+				data : params,
+				success : function(arr) { // 서버 List 객체는 클라이언트 배열 객체로 받음
+					console.log(arr);
+					$("select[name=" + disname + "] option").remove();
+					$("select[name=" + disname + "]").append(function() {
+						return "<option value=''>" + toptext + "</option>"
+					})
+					$.each(arr, function(i, item) {
+						$("select[name=" + disname + "]").append(function() {
+							return "<option>" + item + "</option>";
+						})
+					})
+				}
+			})
+		}
+		function exchangeRate() {
+			$.ajax("/ajax/exchange1", {
+				success : function(data) {
+					console.log(data)
+					$("#exchange").html(data)
+				},
+				error : function(e) {
+					alert("환율 조회시 서버 오류 발생 :" + e.status)
+				}
+			})
+		}
+		// josn.trlist : 4개 배열 객체 저장
+		// tds : 8개의 문자열 배열
+		function exchangeRate2() {
+			$.ajax("${path}/ajax/exchange2", {
+				success : function(json) {
+					console.log(json)
+					let html = "<h4 class='w3-center'>수출입은행2<br>" + json.exdate
+							+ "</h4>";
+					html += "<table class='w3-table-all w3-margin-right'>"
+					html += "<tr><th>통화</th></th>기준율</th>"
+							+ "<th>받으실 때</th><th>보내실 때</th></th>"
+					$.each(json.trlist, function(i, tds) {
+						html += "<tr><td>" + tds[0] + "<br>" + tds[1]
+								+ "</td><td>" + tds[4] + "</td>" + "<td>"
+								+ tds[2] + "</td><td>" + tds[3] + "</td></tr>"
+					})
+					html += "</table>"
+					$("#exchange").html(html)
+				},
+				error : function(e) {
+					alert("환율 조회시 서버 오류 발생 :" + e.status)
+				}
+			})
+		}
+		let randomColorFactor = function() {
+			return Math.round(Math.random() * 255)
+		}
+		let randomColor = function(opa) {
+			return "rgba(" + randomColorFactor() + "," + randomColorFactor()
+					+ "," + randomColorFactor() + "," + (opa || '.3') + ")"
+		}
+		function piegraph(id) {
+		    $.ajax({
+		        url: "/ajax/graph1",
+		        method: "GET", // GET이 기본이긴 하지만 명시하면 좋음
+		        data: { id: id },
+		        success: function (json) {
+		            // canvas ID 따옴표 띄어쓰기 제거 & 높이 지정 권장
+		            let canvas = "<canvas id='canvas1' style='width:100%'></canvas>";
+		            $("#piecontainer").html(canvas);
+		            pieGraphPrint(json, id);
+		        },
+		        error: function (e) {
+		            alert("서버오류: " + e.status);
+		        }
+		    });
+		}
+
+		function pieGraphPrint(arr, id) {
+			let colors = [];
+			let writers = [];
+			let datas = [];
+
+			$.each(arr, function(index, item) {
+				colors[index] = randomColor(0.5);
+				$.each(item, function(key, value) {
+					writers.push(key);
+					datas.push(value);
+				});
+			});
+
+			let title = (id == 2) ? "자유게시판" : "QNA";
+
+			let config = {
+				type : 'pie',
+				data : {
+					datasets : [ {
+						data : datas,
+						backgroundColor : colors
+					} ],
+					labels : writers
+				// 오타 수정: labals → labels
+				},
+				options : {
+					responsive : true,
+					legend : {
+						display : true,
+						position : "right"
+					},
+					title : {
+						display : true, // 오타 수정: ture → true
+						text : '글쓴이 별 ' + title + " 등록건수",
+						position : 'bottom'
+					}
+				}
+			};
+
+			let ctx = document.getElementById("canvas1").getContext('2d'); // getContext 필요
+			new Chart(ctx, config);
+		}
+	</script>
+
 </body>
 </html>

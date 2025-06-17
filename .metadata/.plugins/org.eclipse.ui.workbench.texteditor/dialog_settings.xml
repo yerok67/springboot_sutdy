@@ -10,21 +10,21 @@
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Document"/>
+			<item value="detail"/>
+			<item value="substring"/>
+			<item value="logo"/>
+			<item value="append"/>
+			<item value="params"/>
+			<item value="dsiname"/>
+			<item value="getSido1"/>
+			<item value="upload"/>
 			<item value="null"/>
 			<item value="content"/>
 			<item value="like "/>
 			<item value="boardlist"/>
 			<item value="boardlist "/>
 			<item value="actiron"/>
-			<item value="actiron "/>
-			<item value="vali"/>
-			<item value="searchtype"/>
-			<item value="serachtype"/>
-			<item value="boaridid"/>
-			<item value="tag"/>
-			<item value="Mike"/>
-			<item value="Regions"/>
-			<item value="New record, over 90 views."/>
 		</list>
 		<list key="replacehistory">
 		</list>

@@ -12,7 +12,7 @@ import kr.gdu.dao.mapper.BoardMapper;
 import kr.gdu.logic.Board;
 
 @Repository
-public class boardDao {
+public class BoardDao {
 	@Autowired
 	private SqlSessionTemplate template;
 	private Class<BoardMapper> cls = BoardMapper.class;
@@ -52,4 +52,16 @@ public class boardDao {
 	public void update(Board board) {
 		template.getMapper(cls).update(board);
 	}
+	public void delete(int num) {
+		template.getMapper(cls).delete(num);
+	}
+	public void grpStepAdd(Board board) {
+		param.clear();
+		param.put("grp", board.getGrp());         //원글의 grp
+		param.put("grpstep", board.getGrpstep()); //원글의 grpstep
+		template.getMapper(cls).grpStepAdd(param);		
+	}
+	public List<Map<String, Object>> graph1(String id) {
+		return template.getMapper(cls).graph1(id);
+	}	
 }

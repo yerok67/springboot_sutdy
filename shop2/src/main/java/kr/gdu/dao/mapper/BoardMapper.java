@@ -3,6 +3,7 @@ package kr.gdu.dao.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -41,5 +42,16 @@ public interface BoardMapper {
 	@Update("update board set writer=#{writer}, title=#{title}, context =#{content}," 
 	+ " file1=#{fileurl} where num=#{num}")
 	void update(Board board);
+
+    @Delete("delete from board where num = #{num}")
+	void delete(int num);
+
+    @Update("update board set grpstep=grpstep + 1" 
+            + " where grp = #{grp} and grpstep > #{grpstep}")
+	void grpStepAdd(Map<String, Object> param);
+
+    @Select("select writer,count(*) cnt from board where boardid=#{value} "
+    		+ " group by writer order by 2 desc limit 0,7")
+	List<Map<String, Object>> graph1(String id);
 
 }
