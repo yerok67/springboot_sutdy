@@ -70,10 +70,15 @@ public class AjaxController {
 		Collections.sort(list,(m1,m2)-> m2.getValue() - m1.getValue());
 		return list;
 	}
+	@RequestMapping("graph2")
+	public List<Map.Entry<String, Integer>> graph2(String id) {
+	    Map<String, Integer> map = service.graph2(id);
+	    List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+	    return list;
+	}
 	
 	@RequestMapping(value = "logo", produces = "text/plain; charset=utf-8")
-	public String gudiLogo() {
+	public void gudiLogo() {
 	    service.gudiLogo();
-	    return "로고 크롤링 완료!";
 	}
 }

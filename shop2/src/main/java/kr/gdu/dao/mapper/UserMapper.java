@@ -19,7 +19,9 @@ public interface UserMapper {
 			+ " values (#{userid},#{username},#{password},#{birthday}," + "#{phoneno},#{postcode},#{address},#{email})")
 	void insert(User user);
 
-	@Select({ "<script>", "select * from useraccount ", "<if test='userid != null'> where userid=#{userid}</if>",
+	@Select({ "<script>", "select * from useraccount", "<if test='userid != null'> where userid=#{userid}</if>",
+			"<if test='userids != null'>where userid in" + "<foreach collection='userids' item='id' separator=',' "
+					+ "open='(' close=')'>#{id}" + "</foreach></if>",
 			"</script>" })
 	List<User> select(Map<String, Object> param);
 
@@ -34,14 +36,11 @@ public interface UserMapper {
 	@Update("update useraccount set password = #{chgpass} where userid = #{userid}")
 	void chgPass(@Param("userid") String userid, @Param("chgpass") String chgpass);
 
-	@Select({ "<script>",
-			"select ${col} from useraccount "
-			+ "where email=#{email} and phoneno=#{phoneno} "
-			+ "<if test='userid != null1'> and userid=#{userid} </if>",
-			"</script>" })
+	@Select({ "<script>", "select ${col} from useraccount " + "where email=#{email} and phoneno=#{phoneno} "
+			+ "<if test='userid != null1'> and userid=#{userid} </if>", "</script>" })
 	String search(Map<String, Object> param);
 
 	@Update("update useraccount set password=#{ranpw} where userid=#{user.userid} ")
-	void resetPw(@Param("user")User user,@Param("ranpw") String ranPw);
+	void resetPw(@Param("user") User user, @Param("ranpw") String ranPw);
 
 }

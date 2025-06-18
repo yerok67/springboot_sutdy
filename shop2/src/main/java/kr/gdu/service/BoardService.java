@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +34,11 @@ import kr.gdu.logic.Comment;
 
 @Service
 public class BoardService {
-	
-    @PostConstruct
-    public void initLogo() {
-        this.gudiLogo();
-    }
+
+	@PostConstruct
+	public void initLogo() {
+		this.gudiLogo();
+	}
 
 	@Value("${summernote.imgupload}")
 	private String UPLOAD_IMAGE_DIR; // application.properties의 환경변수값 읽기
@@ -308,6 +309,16 @@ public class BoardService {
 		}
 		return map;
 	}
+	public Map<String, Integer> graph2(String id) {
+	    List<Map<String, Object>> list = boardDao.graph2(id);
+	    Map<String, Integer> map = new LinkedHashMap<>(); // 순서 유지!
+	    for (Map<String, Object> m : list) {
+	        String day = (String) m.get("day");
+	        long cnt = (Long) m.get("cnt");
+	        map.put(day, (int) cnt);
+	    }
+	    return map;
+	}
 
 	public void gudiLogo() {
 		String url = "https://gudi.kr/";
@@ -325,7 +336,7 @@ public class BoardService {
 			File dir = new File(UPLOAD_IMAGE_DIR + "/img");
 			if (!dir.exists())
 				dir.mkdirs();
-			
+
 			File file = new File(dir, "logo.png");
 
 			try (InputStream in = imgUrl.openStream()) {

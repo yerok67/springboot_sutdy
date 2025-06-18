@@ -146,9 +146,9 @@ html, body, h1, h2, h3, h4, h5 {
 			</div>
 			<div class="w3-half">
 				<div class="w3-container w3-padding-16 w3-center">
-					<input type="radio" name="barline" onchange="piegraph(2)"
+					<input type="radio" name="barline" onchange="barlinegraph(2)"
 						checked="checked">자유게시판 &nbsp;&nbsp; <input type="radio"
-						name="barline" onchange="piegraph(3)">QNA &nbsp;&nbsp;
+						name="barline" onchange="barlinegraph(3)">QNA &nbsp;&nbsp;
 					<div id="barcontainer"
 						style="width: 100%; border: 1px solid #ffffff"></div>
 				</div>
@@ -215,6 +215,7 @@ html, body, h1, h2, h3, h4, h5 {
 			// exchangeRate();	// HTML 형식(문자열)
 			exchangeRate2() // Map 형식(JSON)
 			piegraph(2) //
+			barlinegraph(2)
 		});
 		function getSido1() {
 			$.ajax({
@@ -308,20 +309,23 @@ html, body, h1, h2, h3, h4, h5 {
 					+ "," + randomColorFactor() + "," + (opa || '.3') + ")"
 		}
 		function piegraph(id) {
-		    $.ajax({
-		        url: "/ajax/graph1",
-		        method: "GET", // GET이 기본이긴 하지만 명시하면 좋음
-		        data: { id: id },
-		        success: function (json) {
-		            // canvas ID 따옴표 띄어쓰기 제거 & 높이 지정 권장
-		            let canvas = "<canvas id='canvas1' style='width:100%'></canvas>";
-		            $("#piecontainer").html(canvas);
-		            pieGraphPrint(json, id);
-		        },
-		        error: function (e) {
-		            alert("서버오류: " + e.status);
-		        }
-		    });
+			$
+					.ajax({
+						url : "/ajax/graph1",
+						method : "GET", // GET이 기본이긴 하지만 명시하면 좋음
+						data : {
+							id : id
+						},
+						success : function(json) {
+							// canvas ID 따옴표 띄어쓰기 제거 & 높이 지정 권장
+							let canvas = "<canvas id='canvas1' style='width:100%'></canvas>";
+							$("#piecontainer").html(canvas);
+							pieGraphPrint(json, id);
+						},
+						error : function(e) {
+							alert("서버오류: " + e.status);
+						}
+					});
 		}
 
 		function pieGraphPrint(arr, id) {
@@ -364,6 +368,84 @@ html, body, h1, h2, h3, h4, h5 {
 			};
 
 			let ctx = document.getElementById("canvas1").getContext('2d'); // getContext 필요
+			new Chart(ctx, config);
+		}
+		function barlinegraph(id) {
+							console.log("야야야야야");
+			$
+					.ajax(
+							"/ajax/graph2?id=" + id,
+							{
+								success : function(arr) {
+									let canvas = "<canvas id='canvas2' style='width:100%'></canvas>"; // 100$ -> 100%, 태그 닫기
+									$("#barcontainer").html(canvas);
+									barlineGraphPrint(arr, id);
+								}
+							});
+		}
+
+		function barlineGraphPrint(arr, id) {
+			let colors = [];
+			let regdates = [];
+			let datas = [];
+			$.each(arr, function(index) {
+				colors[index] = randomColor(0.5);
+				for (key in arr[index]) {
+					regdates.push(key);
+					datas.push(arr[index][key]);
+				}
+			});
+			let title = (id == 2) ? "자유게시판" : "QNA";
+			let config = {
+				type : "bar", // 문자열로!
+				data : {
+					datasets : [ {
+						type : "line",
+						borderWidth : 2,
+						borderColor : colors,
+						label : '건수',
+						data : datas
+					// 변수명 수정
+					}, {
+						type : "bar",
+						backgroundColor : colors,
+						label : '건수',
+						data : datas
+					// 변수명 수정
+					} ],
+					labels : regdates
+				},
+				options : {
+					responsive : true,
+					legend : {
+						display : false
+					},
+					title : {
+						display : true,
+						text : '최근 7일 ' + title + " 등록건수",
+						position : 'bottom'
+					},
+					scales : {
+						xAxes : [ {
+							display : true,
+							scaleLabel : {
+								display : true, // ture -> true
+								labelString : "작성일자"
+							}
+						} ],
+						yAxes : [ {
+							scaleLabel : {
+								display : true
+							// ture -> true
+							},
+							ticks : {
+								beginAtZero : true
+							}
+						} ]
+					}
+				}
+			};
+			let ctx = document.getElementById("canvas2");
 			new Chart(ctx, config);
 		}
 	</script>

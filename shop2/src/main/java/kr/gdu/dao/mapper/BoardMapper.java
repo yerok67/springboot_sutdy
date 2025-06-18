@@ -39,19 +39,21 @@ public interface BoardMapper {
 			+ "now(), 0, #{grp}, #{grplevel}, #{grpstep})")
 	void insert(Board board);
 
-	@Update("update board set writer=#{writer}, title=#{title}, context =#{content}," 
-	+ " file1=#{fileurl} where num=#{num}")
+	@Update("update board set writer=#{writer}, title=#{title}, context =#{content},"
+			+ " file1=#{fileurl} where num=#{num}")
 	void update(Board board);
 
-    @Delete("delete from board where num = #{num}")
+	@Delete("delete from board where num = #{num}")
 	void delete(int num);
 
-    @Update("update board set grpstep=grpstep + 1" 
-            + " where grp = #{grp} and grpstep > #{grpstep}")
+	@Update("update board set grpstep=grpstep + 1" + " where grp = #{grp} and grpstep > #{grpstep}")
 	void grpStepAdd(Map<String, Object> param);
 
-    @Select("select writer,count(*) cnt from board where boardid=#{value} "
-    		+ " group by writer order by 2 desc limit 0,7")
+	@Select("select writer,count(*) cnt from board where boardid=#{value} "
+			+ " group by writer order by 2 desc limit 0,7")
 	List<Map<String, Object>> graph1(String id);
 
+	@Select("SELECT date_format(regdate,'%Y-%m-%d') day, count(*) cnt " + "FROM board " + "WHERE boardid=${value} "
+			+ "GROUP BY date_format(regdate,'%Y-%m-%d') " + "ORDER BY day DESC LIMIT 0,7")
+	List<Map<String, Object>> graph2(String id);
 }
