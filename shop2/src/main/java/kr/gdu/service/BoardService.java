@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -20,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.gdu.dao.BoardDao;
 import kr.gdu.dao.CommDao;
@@ -28,6 +33,11 @@ import kr.gdu.logic.Comment;
 
 @Service
 public class BoardService {
+	
+    @PostConstruct
+    public void initLogo() {
+        this.gudiLogo();
+    }
 
 	@Value("${summernote.imgupload}")
 	private String UPLOAD_IMAGE_DIR; // application.properties의 환경변수값 읽기
@@ -298,4 +308,35 @@ public class BoardService {
 		}
 		return map;
 	}
+
+	public void gudiLogo() {
+		String url = "https://gudi.kr/";
+		try {
+			Document doc = Jsoup.connect(url).timeout(5000).get();
+
+			Element img = doc.selectFirst("img.scroll_logo.fixed_transform");
+			if (img == null) {
+				throw new IllegalStateException("로고 이미지 태그를 찾을 수 없습니다.");
+			}
+
+			String imgSrc = img.attr("abs:src");
+			URL imgUrl = new URL(imgSrc);
+
+			File dir = new File(UPLOAD_IMAGE_DIR + "/img");
+			if (!dir.exists())
+				dir.mkdirs();
+			
+			File file = new File(dir, "logo.png");
+
+			try (InputStream in = imgUrl.openStream()) {
+				Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			System.out.println("로고 저장 성공: " + file.getAbsolutePath());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -10,10 +10,14 @@
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="BoardController "/>
+			<item value="logo"/>
+			<item value="multipartFile"/>
+			<item value="Element"/>
+			<item value="header"/>
 			<item value="Document"/>
 			<item value="detail"/>
 			<item value="substring"/>
-			<item value="logo"/>
 			<item value="append"/>
 			<item value="params"/>
 			<item value="dsiname"/>
@@ -21,10 +25,6 @@
 			<item value="upload"/>
 			<item value="null"/>
 			<item value="content"/>
-			<item value="like "/>
-			<item value="boardlist"/>
-			<item value="boardlist "/>
-			<item value="actiron"/>
 		</list>
 		<list key="replacehistory">
 		</list>

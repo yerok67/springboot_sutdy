@@ -68,8 +68,8 @@ html, body, h1, h2, h3, h4, h5 {
 		<br>
 		<div class="w3-container w3-row">
 			<div class="w3-col s4">
-				<img src="${path}/image/logo.png" class="w3-circle w3-margin-right"
-					style="width: 100px">
+				<img src="${path}/img/logo.png" class="w3-margin-right"
+					style="width: 80px">
 			</div>
 			<div class="w3-col s8 w3-bar">
 				<c:if test="${!empty sessionScope.loginUser}">
@@ -216,7 +216,6 @@ html, body, h1, h2, h3, h4, h5 {
 			exchangeRate2() // Map 형식(JSON)
 			piegraph(2) //
 		});
-
 		function getSido1() {
 			$.ajax({
 				url : "/ajax/select1",

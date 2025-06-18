@@ -1,7 +1,6 @@
 package kr.gdu.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +69,11 @@ public class AjaxController {
 		}
 		Collections.sort(list,(m1,m2)-> m2.getValue() - m1.getValue());
 		return list;
+	}
+	
+	@RequestMapping(value = "logo", produces = "text/plain; charset=utf-8")
+	public String gudiLogo() {
+	    service.gudiLogo();
+	    return "로고 크롤링 완료!";
 	}
 }
