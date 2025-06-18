@@ -1,0 +1,51 @@
+# Eclipse IDE 관련
+.metadata/
+*.log
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.DS_Store
+
+# Eclipse 프로젝트 파일
+.settings/
+.project
+.classpath
+
+# 빌드 결과물
+/bin/
+/target/
+/out/
+
+# Gradle
+.gradle/
+/build/
+
+# Maven
+/logs/
+!.mvn/wrapper/maven-wrapper.jar
+
+# OS 특화 무시 파일
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE 별 추가 (VSCode, IntelliJ 등 사용 시)
+.vscode/
+.idea/
+*.iml
+
+# 로그 파일
+*.log
+
+# 기타 무시해야 할 임시파일
+*.sublime-workspace
+*.sublime-project
+*.sw?
+
+# Node.js 사용 시
+node_modules/
+
+# Python 사용 시
+__pycache__/
+*.pyc
