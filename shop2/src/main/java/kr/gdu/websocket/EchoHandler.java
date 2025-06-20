@@ -6,30 +6,34 @@ import java.util.Set;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-
-
 public class EchoHandler extends TextWebSocketHandler implements InitializingBean {
 
 	private Set<WebSocketSession> clients = new HashSet<>();
+
+	// 클라이언트로부터 요청되어 연결 완료
 	@Override
-	
+
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		// session : 웹소켓 접속 객체의 고유한 ID 값
 		super.afterConnectionEstablished(session);
 		System.out.println("클라이언트 접속 : " + session.getId());
-		clients.add(session);
+		clients.add(session); // hashSet에 접속 객체 저장
 	}
+
+	// 메시지가 수신된 경우
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-		String loadMessage = (String)message.getPayload();
-		System.out.println(session.getId() + ": 클라이언트 메시지:" +loadMessage);
-		clients.add(session);
-		for(WebSocketSession s : clients) {
-			s.sendMessage(new TextMessage(loadMessage));
+		// loadMessage : 클라이언트가 전송한 메세지.
+		String loadMessage = (String) message.getPayload();
+		System.out.println(session.getId() + ": 클라이언트 메시지:" + loadMessage);
+		clients.add(session); // 클라이언트를 clients에 추가
+		for (WebSocketSession s : clients) {
+			// s : 접속된 클라이언트 객체
+			s.sendMessage(new TextMessage(loadMessage)); // 모든 클라이언트에 전송
 		}
 	}
 
@@ -50,9 +54,10 @@ public class EchoHandler extends TextWebSocketHandler implements InitializingBea
 	public boolean supportsPartialMessages() {
 		return false;
 	}
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		
+
 	}
 
 }
