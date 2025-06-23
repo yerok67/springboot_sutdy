@@ -101,20 +101,28 @@ html, body, h1, h2, h3, h4, h5 {
 			<hr>
 			<a href="${path}/board/list?boardid=1"
 				class="w3-bar-item w3-button w3-padding
-     <c:if test='${url == "board" && boardid=="1"}'>w3-blue</c:if>">
+     		<c:if test='${url == "board" && boardid=="1"}'>w3-blue</c:if>">
 				<i class="fa fa-bullhorn fa-fw"></i>&nbsp; 공지사항
 			</a> <a href="${path}/board/list?boardid=2"
 				class="w3-bar-item w3-button w3-padding
-    <c:if test='${url == "board" && boardid=="2"}'>w3-blue</c:if>">
+   	 		<c:if test='${url == "board" && boardid=="2"}'>w3-blue</c:if>">
 				<i class="fa fa-comments fa-fw"></i>&nbsp; 자유게시판
 			</a> <a href="${path}/board/list?boardid=3"
 				class="w3-bar-item w3-button w3-padding
-    <c:if test='${url == "board" && boardid=="3"}'>w3-blue</c:if>">
+    		<c:if test='${url == "board" && boardid=="3"}'>w3-blue</c:if>">
 				<i class="fa fa-question-circle fa-fw"></i>&nbsp; QnA
 			</a>
 		</div>
-		<br> <br>
-
+		<hr>
+		<a href="${path}/chat/chatbot"
+			class="w3-bar-item w3-button w3-padding "><i
+			class="fa fa-comments fa-fw"></i>&nbsp; 챗봇</a>
+		<hr>
+		<a href="${path}/naver/search"
+			class="w3-bar-item w3-button w3-padding "> <i
+			class="fa fa-eye fa-fw"></i>&nbsp; 네이버 검색
+		</a> <br>
+		<br>
 		<div style="width: 100%;">
 			<div id="exchange" style="width: 70%; margin: 6px;"></div>
 		</div>
@@ -371,7 +379,7 @@ html, body, h1, h2, h3, h4, h5 {
 			new Chart(ctx, config);
 		}
 		function barlinegraph(id) {
-							console.log("야야야야야");
+			console.log("야야야야야");
 			$
 					.ajax(
 							"/ajax/graph2?id=" + id,

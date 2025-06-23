@@ -1,10 +1,12 @@
 package kr.gdu.controller;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
+import kr.gdu.service.ChatBotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +32,14 @@ import kr.gdu.service.BoardService;
 @RestController
 @RequestMapping("ajax")
 public class AjaxController {
+
+    private final ChatBotService chatBotService;
 	@Autowired
 	BoardService service;
+
+    AjaxController(ChatBotService chatBotService) {
+        this.chatBotService = chatBotService;
+    }
 
 	// produces="text/plain; charset=utf-8" : 전송될 데이터 형식
 	@PostMapping(value = "uploadImage", produces = "text/plain; charset=utf-8")
@@ -80,5 +88,17 @@ public class AjaxController {
 	@RequestMapping(value = "logo", produces = "text/plain; charset=utf-8")
 	public void gudiLogo() {
 	    service.gudiLogo();
+	}
+	
+	@RequestMapping("gptquestion")
+	public String gptquestion(String question) {
+		String response = null;
+		try {
+			response = chatBotService.getChatGPTResponse(question);
+		} catch (URISyntaxException | IOException | InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println(response);
+		return response;
 	}
 }

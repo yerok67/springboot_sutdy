@@ -3,7 +3,6 @@ package kr.gdu.controller;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.lang.ProcessBuilder.Redirect;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -280,11 +279,13 @@ public class UserController {
 		clientId = "WtxSqXVWVvZt5Dh9CGFz";
 		String redirectURL = null;
 		try {
+			// 콜백 URL 설정 => 네이버에서 정상처리로 결정되면 호출해주는 URL
 			redirectURL = URLEncoder.encode("http://localhost:8080/user/naverlogin","UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		SecureRandom random = new SecureRandom();
+		// 130자리 임의의 큰정수값
 		String state = new BigInteger(130,random).toString();
 		String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
 		apiURL += "&client_id=" + clientId;
@@ -299,7 +300,7 @@ public class UserController {
 	
 	@RequestMapping("naverlogin")
 	public String naverlogin(String code, String state, HttpSession session) {
-		System.out.print("2.sesion.id=" + session.getId());
+		System.out.println("2.sesion.id=" + session.getId());
 		String clientId = "클라이언트 아이디값";
 		clientId = "WtxSqXVWVvZt5Dh9CGFz";
 		String clientSecret = "클라이언트 시크릿값";
@@ -371,6 +372,7 @@ public class UserController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println(res);
 		try {
 			json = (JSONObject)parser.parse(res.toString());
 		} catch (ParseException e) {
