@@ -1,6 +1,0 @@
-spring.application.name=shop2
-
-spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-spring.datasource.url=jdbc:mariadb://localhost:3306/gdjdb
-spring.datasource.username=gduser
-spring.datasource.password=1234
