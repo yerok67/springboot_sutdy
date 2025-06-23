@@ -49,3 +49,4 @@ node_modules/
 # Python 사용 시
 __pycache__/
 *.pyc
+.metadata/.plugins/org.eclipse.core.resources/.history/25/408c6b0af74700101860ee6adc3879cf
