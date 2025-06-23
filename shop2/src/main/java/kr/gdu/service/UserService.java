@@ -23,7 +23,6 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
-import jakarta.validation.Valid;
 import kr.gdu.dao.UserDao;
 import kr.gdu.logic.Mail;
 import kr.gdu.logic.User;
@@ -103,11 +102,11 @@ public class UserService {
 		// passwd : 앱비밀번호
 		MyAuthenticator auth = new MyAuthenticator(sender, mail.getGooglepw());
 		Session session = Session.getInstance(prop, auth);
-		
+
 		try {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(sender));
-			
+
 			List<InternetAddress> addrs = new ArrayList<InternetAddress>();
 			String[] emails = mail.getRecipient().split(",");
 			for (String email : emails) {
@@ -160,11 +159,11 @@ public class UserService {
 		String path = RESOURCE_DIR + "mailupload/";
 		List<String> filenames = new ArrayList<>();
 		System.out.println(mail.getFile1());
-		for(MultipartFile mf : mail.getFile1()) {
+		for (MultipartFile mf : mail.getFile1()) {
 			filenames.add(mf.getOriginalFilename());
 		}
-		for(String f : filenames) {
-			File df = new File(path,f);
+		for (String f : filenames) {
+			File df = new File(path, f);
 			df.delete();
 		}
 	}

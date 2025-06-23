@@ -1,23 +1,30 @@
 package kr.gdu.service;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.gdu.dao.ExchangeDao;
 import kr.gdu.dao.ItemDao;
 import kr.gdu.dao.SaleDao;
 import kr.gdu.dao.SaleItemDao;
 import kr.gdu.logic.Cart;
+import kr.gdu.logic.Exchange;
 import kr.gdu.logic.Item;
 import kr.gdu.logic.ItemSet;
 import kr.gdu.logic.Sale;
 import kr.gdu.logic.SaleItem;
 import kr.gdu.logic.User;
-
 
 @Service // @Component + Service : 객체화 + 서비스기능
 public class ShopService {
@@ -27,7 +34,9 @@ public class ShopService {
 	private SaleDao saleDao;
 	@Autowired
 	private SaleItemDao saleItemDao;
-
+	@Autowired
+	private ExchangeDao exDao;
+	
 	public List<Item> itemList() {
 		return itemDao.list();
 	}
@@ -107,5 +116,39 @@ public class ShopService {
 			sa.setItemList(saleItemList);
 		}
 		return list;
+	}
+
+	public void exchageCreate() {
+		Document doc = null;
+		List<List<String>> trlist = new ArrayList<>();
+		String url = "https://www.koreaexim.go.kr/wg/HPHKWG057M01";
+		String exdate = null;
+		try {
+			doc = Jsoup.connect(url).get();
+			Elements trs = doc.select("tr");
+			exdate = doc.select("p.table-unit").html();
+			exdate = exdate.substring(exdate.indexOf(":") + 2);
+			System.out.println(exdate);
+			for(Element tr : trs) {
+				List<String> tdlist = new ArrayList<>();
+				Elements tds = tr.select("td");
+				for(Element td : tds) {
+					tdlist.add(td.html());
+				}
+				if(tdlist.size() > 0) {
+					trlist.add(tdlist);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(List<String> tds : trlist) {
+			Exchange ex = new Exchange(0, tds.get(0), tds.get(1),
+					Float.parseFloat(tds.get(2).replace(",", "")),
+					Float.parseFloat(tds.get(3).replace(",", "")),
+					Float.parseFloat(tds.get(4).replace(",", "")),
+					exdate.trim());
+			exDao.insert(ex);
+		}
 	}
 }
