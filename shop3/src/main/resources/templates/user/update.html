@@ -3,11 +3,11 @@
 	th:replace="~{/layout/layout :: layout(~{::title}, ~{::body}, ~{::style})}">
 <head>
 <meta charset="UTF-8">
-<title>사용자등록</title>
+<title>사용자정보 수정</title>
 </head>
 <body>
-	<h2>사용자 등록</h2>
-	<form th:object="${userDto}" method="post" action="join">
+	<h2>사용자 수정</h2>
+	<form method="post" action="update" th:object="${userDto}">
 		<div th:if="${#fields.hasGlobalErrors()}">
 			<div th:each="err : ${#fields.globalErrors()}" th:text="${err}" class="w3-text-red">Global
 				Error</div>
@@ -27,35 +27,31 @@
 			</tr>
 			<tr>
 				<td>이름</td>
-				<td><input type="input" name="username" th:field="*{username}" /> <span
+				<td><input type="text" name="username" th:field="*{username}" /> <span
 					th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="w3-text-red">username
 						error</span></td>
 			</tr>
 			<tr>
 				<td>전화번호</td>
-				<td><input type="text" name="phoneno" /></td>
+				<td><input type="text" name="phoneno" th:field="*{phoneno}"/></td>
 			</tr>
 			<tr>
 				<td>우편번호</td>
-				<td><input type="text" name="postcode" /></td>
-			</tr>
-			<tr>
-				<td>주소</td>
-				<td><input type="text" name="address" /></td>
+				<td><input type="text" name="postcode" th:field="*{postcode}"/></td>
 			</tr>
 			<tr>
 				<td>이메일</td>
-				<td><input type="text" name="email" /> <span th:if="${#fields.hasErrors('email')}"
+				<td><input type="text" name="email" th:field="*{email}"/> <span th:if="${#fields.hasErrors('email')}"
 					th:errors="*{email}" class="w3-text-red">email error</span></td>
 			</tr>
 			<tr>
 				<td>생년월일</td>
-				<td><input type="text" name="birthday" placeholder="yyyy-MM-dd" /> <span
-					th:if="${#fields.hasErrors('birthday')}" th:errors="birthday" class="w3-text-red">birthday
+				<td><input type="text" name="birthday" th:field="*{birthday}" placeholder="yyyy-MM-dd" /> <span
+					th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="w3-text-red">birthday
 						error</span></td>
 			</tr>
 			<tr>
-				<td><input type="submit" value="회원가입"> <input type="reset" value="초기화"></td>
+				<td><input type="submit" value="수정"></td>
 			</tr>
 		</table>
 	</form>
