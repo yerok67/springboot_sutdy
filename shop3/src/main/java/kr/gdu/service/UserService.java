@@ -26,7 +26,7 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeMultipart;
 
 //import kr.gdu.logic.Mail;
-import kr.gdu.logic.User;
+import kr.gdu.domain.User;
 import kr.gdu.repository.UserRepository;
 
 @Service
@@ -39,10 +39,14 @@ public class UserService {
 		userdao.save(user);
 	}
 
-//	public User selectUser(String userid) {
-//		return userdao.selectOne(userid);
-//	}
-//
+	public User selectUser(String userid) {
+		//사용자정의 메서드
+		// userid에 해당하는 데이터 조회. repository에 메서드명을 설정해야함. 
+		return userdao.findByUserid(userid);
+		//@id로 설정된 값에 해당하는 데이터 조회
+//		return userdao.findById(userid).get(); 
+	}
+
 //	public void userUpdate(User user) {
 //		userdao.update(user);
 //	}

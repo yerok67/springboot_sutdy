@@ -8,7 +8,7 @@
 </head>
 <body>
 <h2>사용자 등록</h2>
-<form th:object="${user}" method="post" action="join">
+<form th:object="${userDto}" method="post" action="join">
 <div th:if="${#fields.hasGlobalErrors()}">
   <div th:each="err : ${#fields.globalErrors()}"
       th:text="${err}" class="w3-text-red">Global Error</div>
@@ -39,4 +39,4 @@
         class="w3-text-red">birthday error</span></td></tr>
    <tr><td><input type="submit" value="회원가입">
            <input type="reset" value="초기화">
-   </td></tr></table></form:form></body></html>
+   </td></tr></table></form></body></html>

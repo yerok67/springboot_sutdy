@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import kr.gdu.logic.Item;
+import kr.gdu.domain.Item;
+import kr.gdu.dto.ItemDto;
 import kr.gdu.repository.ItemRepository;
 
 @Service  //@Component + Service : 객체화 + 서비스기능
@@ -32,7 +33,7 @@ public class ShopService {
 		//Optional<Item> findById(id)
 		return itemDao.findById(id).get();
 	}	
-	public void itemCreate(Item item, HttpServletRequest request) {
+	public void itemCreate(ItemDto item, HttpServletRequest request) {
 		//item.getPicture() : 업로드된 파일이 존재. 파일의 내용 저장
 		if(item.getPicture() != null && !item.getPicture().isEmpty()) {
 			//업로드 폴더 지정
@@ -42,7 +43,7 @@ public class ShopService {
 		}
 		int maxid = itemDao.findMaxId(); //db에서 id의 최대값 조회
 		item.setId(maxid + 1); //
-		itemDao.save(item); //insert, update 기능
+		itemDao.save(new Item(item)); //insert, update 기능
 	}
 	//파일 업로드하기
 	private void uploadFileCreate(MultipartFile picture, String path) {
@@ -140,13 +141,13 @@ public class ShopService {
 		}		
 	}
 */
-	public void itemUpdate(@Valid Item item, HttpServletRequest request) {
+	public void itemUpdate(@Valid ItemDto item, HttpServletRequest request) {
 		if(item.getPicture() != null && !item.getPicture().isEmpty()) {
 		  String path = request.getServletContext().getRealPath("/")+"img/";
 		  uploadFileCreate(item.getPicture(),path);
 		  item.setPictureUrl(item.getPicture().getOriginalFilename());
 		}
-		itemDao.save(item);	//수정	
+		itemDao.save(new Item(item));	//수정	
 	}
 	public void itemDelete(Integer id) {
 		itemDao.deleteById(id); //

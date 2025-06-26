@@ -40,7 +40,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 	<th:block th:if="${session.loginUser != null}">
 	<span th:text="${session.loginUser.username}"></span>
 	님이 로그인 하셨습니다.&nbsp;&nbsp;
-	 <a href="@{/user/logout}">로그아웃</a>
+	 <a th:href="@{/user/logout}">로그아웃</a>
 	</th:block>   
   </span>
 </div>
