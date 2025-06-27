@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/layout :: layout(~{::title}, ~{::body}, ~{::style})}">
+<head>
+<meta charset="UTF-8">
+<title>게시글 작성</title>
+</head>
+<body>
+	<form th:object="${boardDto}" action="write" enctype="multipart/form-data" name="f" method="post">
+		<input type="hidden" name="boardid" th:value="${param.boardid}">
+		<table class="w3-table">
+			<tr>
+				<th>글쓴이</th>
+				<td><input type="text" name="writer" class="w3-input" th:value="*{writer}" /> <span
+					th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}" class="w3-text-red">writer</span>
+				</td>
+			</tr>
+
+			<tr>
+				<th>비밀번호</th>
+				<td><input type="password" name="pass" class="w3-input" /> <span
+					th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}" class="w3-text-red">pass</span></td>
+			</tr>
+
+			<tr>
+				<th>제목</th>
+				<td><input type="text" name="title" class="w3-input" th:value="*{title}" /> <span
+					th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="w3-text-red">title</span></td>
+			</tr>
+
+			<tr>
+				<th>내용</th>
+				<td><textarea name="content" rows="15" cols="80" id="summernote" th:text="*{content}"></textarea>
+					<span th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="w3-text-red">content</span>
+				</td>
+			</tr>
+
+			<tr>
+				<th>첨부파일</th>
+				<td><input type="file" name="file1" /></td>
+			</tr>
+
+			<tr>
+				<td colspan="2" class="w3-center"><a href="javascript:document.f.submit()">[게시글등록]</a> <a
+					th:href="@{/list(boardid=${param.boardid})}">[게시글목록]</a></td>
+			</tr>
+		</table>
+	</form>
+
+	<script type="text/javascript">
+		$(function() {
+			$("#summernote").summernote({
+				height : 300,
+				callbacks : {
+					onImageUpload : function(images) {
+						for (let i = 0; i < images.length; i++) {
+							sendFile(images[i]);
+						}
+					}
+				}
+			});
+		});
+
+		function sendFile(file) {
+			let data = new FormData();
+			data.append("image", file);
+			$.ajax({
+				url : "/ajax/uploadImage",
+				type : "post",
+				data : data,
+				processData : false,
+				contentType : false,
+				success : function(src) {
+					console.log(src);
+					$("#summernote").summernote("insertImage", src);
+				},
+				error : function(e) {
+					alert("이미지 업로드 실패:" + e.status);
+				}
+			});
+		}
+	</script>
+</body>
+</html>
