@@ -24,18 +24,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "Usercipher")
-@Table(name = "usercipher")
+@Entity(name="Usercipher")
+@Table(name="usercipher")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class User {
-
 	@Id
 	private String userid;
 	@Transient
-	private String channel;
+	private String channel;     
 	private String password;
 	private String username;
 	private String phoneno;
@@ -43,7 +42,6 @@ public class User {
 	private String address;
 	private String email;
 	private Date birthday;
-
 	public User(UserDto dto) {
 		this.userid = dto.getUserid();
 		this.password = dto.getPassword();

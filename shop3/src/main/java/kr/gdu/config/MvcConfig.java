@@ -16,7 +16,6 @@ import com.zaxxer.hikari.HikariDataSource;
 //import kr.gdu.intercepter.BoardInterceptor;
 
 @Configuration
-
 public class MvcConfig implements WebMvcConfigurer{
 	//예외처리 객체
 	@Bean
@@ -24,7 +23,7 @@ public class MvcConfig implements WebMvcConfigurer{
 		SimpleMappingExceptionResolver ser = new SimpleMappingExceptionResolver();
 		Properties pr = new Properties();
 		pr.put("exception.ShopException", "exception");
-		//exception.ShopException 예외 발생시 exception.jsp 페이지 이동
+		//exception.ShopException 예외 발생시 exception.html 페이지 이동
 		ser.setExceptionMappings(pr);
 		return ser;
 	}

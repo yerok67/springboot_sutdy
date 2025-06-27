@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 @Data
-public class ItemDto {  //영속객체
+public class ItemDto {
 	private int id;
 	//@NotEmpty : null 또는 공백인 경우 오류 인식
 	@NotEmpty(message="상품명을 입력하세요")
@@ -23,6 +23,5 @@ public class ItemDto {  //영속객체
 	@NotEmpty(message="상품설명을 입력하세요")
 	private String description;
 	private String pictureUrl;
-	@Transient  //컬럼과 무관한 프로퍼티
 	private MultipartFile picture; //업로드된 파일 저장
 }
