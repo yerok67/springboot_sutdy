@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/layout :: layout(~{::title}, ~{::body}, ~{::style})}">
+<head>
+<meta charset="UTF-8">
+<title>게시판 답글 쓰기</title>
+</head>
+<body>
+	<form th:object="${board}" action="reply" method="post" name="f">
+		<input type="hidden" th:field="*{num}" /> <input type="hidden" th:field="*{boardid}" /> <input
+			type="hidden" th:field="*{grp}" /> <input type="hidden" th:field="*{grplevel}" /> <input
+			type="hidden" th:field="*{grpstep}" />
+
+		<h2>
+			<span th:text="${boardName}"></span> 답글 등록
+		</h2>
+
+		<table class="w3-table">
+			<tr>
+				<td>글쓴이</td>
+				<td><input type="text" name="writer" /> <span th:if="${#fields.hasErrors('writer')}"
+					th:errors="*{writer}" class="w3-text-red">name</span></td>
+			</tr>
+
+			<tr>
+				<td>비밀번호</td>
+				<td><input type="password" name="pass" /> <span th:if="${#fields.hasErrors('pass')}"
+					th:errors="*{pass}" class="w3-text-red">pass</span></td>
+			</tr>
+		</table>
+	</form>
+
+	<script type="text/javascript">
+	const fnSummernoteUpload = () => {
+		$("#summernote").summernote({
+			height : 300,
+			callbacks : {
+				onImageUpload : (images) => {
+					for (let i=0;i < images.length;i++) {
+						let data = new FormData();
+						data.append("image",images[i])
+						fetch("/ajax/uploadImage",{
+							method : "POST",
+							body : data
+						})
+						.then(response=>data)
+						.then(data=>{
+							$("#summernote").summernote("insertImage",data);
+						})
+					}
+				}
+			}
+		})
+	}
+</script>
+</body>
+</html>

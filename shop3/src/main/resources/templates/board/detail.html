@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/layout :: layout(~{::title}, ~{::body}, ~{::style})}">
+<head>
+<meta charset="UTF-8">
+<title th:text="'게시물 상세보기'">게시물 상세보기</title>
+<style type="text/css">
+.leftcol {
+	text-align: left;
+	vertical-align: top;
+}
+
+.lefttoptable {
+	height: 250px;
+	border-width: 0px;
+	text-align: left;
+	vertical-align: top;
+	padding: 0px;
+}
+</style>
+</head>
+<body>
+	<table class="w3-table">
+		<tr>
+			<td colspan="2" th:text="${boardName}">게시판 이름</td>
+		</tr>
+		<tr>
+			<td width="15%">글쓴이</td>
+			<td width="85%" class="leftcol" th:text="${board.writer}">작성자</td>
+		</tr>
+		<tr>
+			<td>제목</td>
+			<td class="leftcol" th:text="${board.title}">제목</td>
+		</tr>
+		<tr>
+			<td>내용</td>
+			<td class="leftcol">
+				<table class="lefttoptable">
+					<tr>
+						<td class="leftcol lefttoptable" th:text="${board.content}">내용</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr th:if="${board.file1 != null}">
+			<td>첨부파일</td>
+			<td><a th:href="@{/file/{file}(file=${board.file1})}" th:text="${board.file1}">파일명</a></td>
+		</tr>
+		<tr>
+			<td colspan="2"><a th:href="@{/reply(num=${board.num}, boardid=${board.boardid})}">[답변]</a>
+				<a th:href="@{/update(num=${board.num}, boardid=${board.boardid})}">[수정]</a> <a
+				th:href="@{/delete(num=${board.num}, boardid=${board.boardid})}">[삭제]</a> <a
+				th:href="@{/list(boardid=${board.boardid})}">[게시물목록]</a></td>
+		</tr>
+	</table>
+
+	<!-- <span id="comment"></span>
+
+	<form th:object="${comment}" th:action="@{/comment}" method="post" name="commForm">
+		<input type="hidden" th:field="*{num}" />
+		<div class="w3-row">
+			<div class="w3-col s2 w3-center">
+				<p>
+					<input type="text" th:field="*{writer}" class="w3-input w3-border" placeholder="작성자" /> <span
+						class="w3-text-red" th:if="${#fields.hasErrors('writer')}" th:errors="*{writer}">writer</span>
+				</p>
+			</div>
+			<div class="w3-col s2 w3-center">
+				<p>
+					<input type="password" th:field="*{pass}" class="w3-input w3-border" placeholder="비밀번호" /> <span
+						class="w3-text-red" th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">pass</span>
+				</p>
+			</div>
+			<div class="w3-col s7 w3-center">
+				<p>
+					<input type="text" th:field="*{content}" class="w3-input w3-border" placeholder="댓글내용" /> <span
+						class="w3-text-red" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">content</span>
+				</p>
+			</div>
+			<div class="w3-col s1 w3-center">
+				<p>
+					<button type="submit" class="w3-btn w3-border">댓글등록</button>
+				</p>
+			</div>
+		</div>
+	</form> -->
+
+	<div class="w3-container">
+		<table class="w3-table-all">
+			<tr th:each="c, stat : ${commlist}">
+				<td th:text="${c.seq}">1</td>
+				<td th:text="${c.writer}">작성자</td>
+				<td th:text="${c.content}">댓글내용</td>
+				<td th:text="${#dates.format(c.regdate, 'yyyy-MM-dd HH:mm:ss')}">2025-01-01</td>
+				<td class="w3-right">
+					<form th:action="@{/commdel}" method="post" th:name="${'commdel' + stat.index}">
+						<input type="hidden" name="num" th:value="${c.num}" /> <input type="hidden" name="seq"
+							th:value="${c.seq}" /> <input type="password" name="pass" placeholder="비밀번호" /> <a
+							th:href="|javascript:document['commdel${stat.index}'].submit()|"
+							class="w3-btn w3-border w3-blue">삭제</a>
+					</form>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

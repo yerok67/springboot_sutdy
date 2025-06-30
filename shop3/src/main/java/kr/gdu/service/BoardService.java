@@ -94,12 +94,13 @@ public class BoardService {
 		return boardDao.findAll(spec, pageable);
 	}
 
-	//	public BoardDto getBoard(Integer num) {
-	//		return boardDao.selectOne(num);  //board 레코드 조회
-	//	}
-	//	public void addReadcnt(Integer num) {
-	//		boardDao.addReadcnt(num);       //조회수 증가
-	//	}
+	public Board getBoard(Integer num) {
+		return boardDao.findById(num).orElseGet(() -> null); //board 레코드 조회
+	}
+
+	public void addReadcnt(Integer num) {
+		boardDao.addReadcnt(num); //조회수 증가
+	}
 	public void boardWrite(BoardDto board, HttpServletRequest request) {
 		int maxnum = boardDao.maxNum();
 		board.setNum(++maxnum);
@@ -136,16 +137,16 @@ public class BoardService {
 	//	public void boardDelete(int num) {
 	//		boardDao.delete(num);
 	//	}
-	//	public void boardReply(BoardDto board) {
-	//		boardDao.grpStepAdd(board);  //이미 등록된 grpstep값 1씩 증가
-	//		int max = boardDao.maxNum();    //최대 num 조회
-	//		board.setNum(++max);  //원글의 num => 답변글의 num 값으로 변경
-	//		                      //원글의 grp => 답변글의 grp 값을 동일. 설정 필요 없음
-	//                              //원글의 boardid => 답변글의 boardid 값을 동일. 설정 필요 없음
-	//		board.setGrplevel(board.getGrplevel() + 1); //원글의 grplevel => +1 답변글의 grplevel 설정
-	//		board.setGrpstep(board.getGrpstep() + 1);   //원글의 grpstep => +1 답변글의 grpstep 설정
-	//		boardDao.insert(board);		
-	//	}
+	public void boardReply(BoardDto board) {
+		boardDao.grpStepAdd(board); //이미 등록된 grpstep값 1씩 증가
+		int max = boardDao.maxNum(); //최대 num 조회
+		board.setNum(++max); //원글의 num => 답변글의 num 값으로 변경
+								//원글의 grp => 답변글의 grp 값을 동일. 설정 필요 없음
+								//원글의 boardid => 답변글의 boardid 값을 동일. 설정 필요 없음
+		board.setGrplevel(board.getGrplevel() + 1); //원글의 grplevel => +1 답변글의 grplevel 설정
+		board.setGrpstep(board.getGrpstep() + 1); //원글의 grpstep => +1 답변글의 grpstep 설정
+		boardDao.save(new Board(board));
+	}
 	//	public List<CommentDto> commentlist(Integer num) {
 	//		return commDao.list(num);
 	//	}
